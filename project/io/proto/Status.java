@@ -1,10 +1,10 @@
-package project.main;
+package project.io.proto;
 
 public enum Status {
 	
 	PROTOCOL_NOT_SET,
-	STREAM_NOT_SET,
-	STREAM_CLOSED,
+	SOCKET_NOT_SET,
+	SOCKET_CLOSED,
 	ALGORITHM_ERROR,
 	PADDING_ERROR,
 	OK,

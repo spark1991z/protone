@@ -41,7 +41,7 @@ public class SecureInputStream extends InputStream {
 	}
 	
 	@Override
-	public synchronized void reset() throws IOException {
+	public void reset() throws IOException {
 		if(position>0){
 			skip(-position);
 			position = 0;

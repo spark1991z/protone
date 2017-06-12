@@ -13,6 +13,8 @@ import project.Parameter;
 import project.Project;
 import project.Stage;
 import project.io.FilteredPrintStream;
+import project.io.proto.Protocol;
+import project.io.proto.Status;
 /**
  * 
  * @author spark1991z
@@ -29,7 +31,7 @@ public class Main extends Project implements Runnable {
 	public static void main(String[] args) {
 		if (project != null)
 			return;
-		project = new Main("ProtONE", 0.5, 4, ALPHA, 142.1); // 12.06
+		project = new Main("ProtONE", 0.5, 5, ALPHA, 143.1); // 12.06
 		System.out.printf("%s%n-----------------------------%n", project);
 		int push = project.config.pushArgs(args);
 		if (push != OK || project.config.get('h').changed()) {
@@ -129,12 +131,13 @@ public class Main extends Project implements Runnable {
 						System.out.printf("Connected '%s'%n", s);
 						try {
 							Protocol prot = new Protocol(name);
-							Status status = Protocol.open(prot, s.getInputStream());
+							Status status = Protocol.open(prot, s);
 								System.out.printf("Connection status: %s%n",
 										status);
 							if (status != Status.OK) {
 								return;
-							}						
+							}
+							
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}

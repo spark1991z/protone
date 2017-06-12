@@ -1,0 +1,14 @@
+package project.main;
+
+public enum Status {
+	
+	PROTOCOL_NOT_SET,
+	STREAM_NOT_SET,
+	STREAM_CLOSED,
+	ALGORITHM_ERROR,
+	PADDING_ERROR,
+	OK,
+	SECRET_KEY_ERROR,
+	IO_ERROR
+
+}

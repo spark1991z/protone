@@ -12,8 +12,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-public class SecureInputStream extends InputStream {
-	
+public class SecureInputStream extends InputStream {	
  
 	private CipherInputStream in;
 	private int position;

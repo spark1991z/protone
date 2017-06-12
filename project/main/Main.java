@@ -31,7 +31,7 @@ public class Main extends Project implements Runnable {
 	public static void main(String[] args) {
 		if (project != null)
 			return;
-		project = new Main("ProtONE", 0.5, 5, ALPHA, 143.1); // 12.06
+		project = new Main("ProtONE", 0.5, 5, ALPHA, 143.2); // 13.06
 		System.out.printf("%s%n-----------------------------%n", project);
 		int push = project.config.pushArgs(args);
 		if (push != OK || project.config.get('h').changed()) {

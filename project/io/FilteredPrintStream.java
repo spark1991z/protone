@@ -1,4 +1,4 @@
-package project.main;
+package project.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,7 +8,7 @@ public class FilteredPrintStream extends OutputStream {
 	
 	private PrintStream system;
 	
-	protected FilteredPrintStream(PrintStream system){
+	public FilteredPrintStream(PrintStream system){
 		this.system = system;
 	}
 

@@ -11,6 +11,8 @@ import javax.net.ServerSocketFactory;
 
 import project.Parameter;
 import project.Project;
+import project.Stage;
+import project.io.FilteredPrintStream;
 /**
  * 
  * @author spark1991z
@@ -27,7 +29,7 @@ public class Main extends Project implements Runnable {
 	public static void main(String[] args) {
 		if (project != null)
 			return;
-		project = new Main();
+		project = new Main("ProtONE", 0.5, 4, ALPHA, 142.1); // 12.06
 		System.out.printf("%s%n-----------------------------%n", project);
 		int push = project.config.pushArgs(args);
 		if (push != OK || project.config.get('h').changed()) {
@@ -67,8 +69,10 @@ public class Main extends Project implements Runnable {
 	private Thread runnable;
 	private ServerSocket server;
 
-	private Main() {
-		super("ProtONE", 0.5, 3, ALPHA, 142.0); // 12.06
+	
+	private Main(String name, double ver, int revision, Stage stage,
+			double build) {
+		super(name, ver, revision, stage, build);
 		config.add('d', "debug mode");
 		config.add('h', "show this information");
 		config.add("port", new Parameter<Integer>(9999, "connection port"));

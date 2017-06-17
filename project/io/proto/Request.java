@@ -20,8 +20,7 @@ public class Request extends InputStream {
 	private Status status;
 	private final RequestCode rc;
 
-	public Request(RequestCode rc, byte[] secureKey, InputStream in)
-			throws IOException {
+	public Request(RequestCode rc, byte[] secureKey, InputStream in) {
 		this.rc = rc;
 		try {
 			this.in = new SecureInputStream(secureKey, "AES", in);
@@ -38,6 +37,9 @@ public class Request extends InputStream {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			status = Status.PADDING_ERROR;
+		} catch (IOException e){
+			e.printStackTrace();
+			status = Status.IO_ERROR;
 		}
 	}
 	

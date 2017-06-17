@@ -48,7 +48,7 @@ public class Server extends Project implements Runnable {
 	private ConnectionListener listener;
 
 	public Server(int port, ConnectionListener listener) {
-		super("ProServer", 0.1, 0, Stage.ALPHA, 1.1); // 17.06
+		super("ProServer", 0.1, 1, Stage.ALPHA, 1.2); // 17.06
 		this.port = port;
 		this.listener = listener;
 		sessionPrivateKeys = new Hashtable<byte[], byte[]>();
@@ -111,16 +111,17 @@ public class Server extends Project implements Runnable {
 						try {
 							InputStream sis = new SecureInputStream(name
 									.getBytes(), "AES", s.getInputStream());
+							OutputStream sos = new SecureOutputStream(name
+									.getBytes(), "AES", s.getOutputStream());
 							System.out
 									.println("Security channel validation was successful");
-							OutputStream sos = null;
+
 							RequestCode rc = RequestCode.valueOf(sis.read());
 							System.out.printf("RequestCode: %s%n", rc);
+							Request req = null;
+							Response res = null;
 							if (rc != null) {
-								sos = new SecureOutputStream(name.getBytes(),
-										"AES", s.getOutputStream());
-								Request req = null;
-								Response res = null;
+
 								byte[] sid = null, nsk = null;
 								switch (rc) {
 								case GET_SESSION_ID:
@@ -172,12 +173,14 @@ public class Server extends Project implements Runnable {
 								default:
 									break;
 								}
+							} else {
+								res = new Response(null, null, null, sos);
+								res.responseCode(ResponseCode.REQUEST_CODE_ERROR);
+								res.close();
 							}
 							sis.close();
-							if (sos != null) {
-								sos.flush();
-								sos.close();
-							}
+							sos.flush();
+							sos.close();
 							s.close();
 							System.out
 									.printf("Connection for '%s' closed%n", s);

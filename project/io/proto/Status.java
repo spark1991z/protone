@@ -2,13 +2,10 @@ package project.io.proto;
 
 public enum Status {
 	
-	PROTOCOL_NOT_SET,
-	SOCKET_NOT_SET,
-	SOCKET_CLOSED,
 	ALGORITHM_ERROR,
 	PADDING_ERROR,
-	OK,
 	SECRET_KEY_ERROR,
-	IO_ERROR
+	IO_ERROR,
+	OK
 
 }

@@ -1,16 +1,59 @@
 package project.io.proto;
 
-import project.Configurator;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
-public class Request {
+import javax.crypto.NoSuchPaddingException;
+
+import project.io.SecureInputStream;
+
+/**
+ * 
+ * @author spark1991z
+ * 
+ */
+public class Request extends InputStream {
+
+	private InputStream in;
+	private Status status;
+	private final RequestCode rc;
+
+	public Request(RequestCode rc, byte[] secureKey, InputStream in)
+			throws IOException {
+		this.rc = rc;
+		try {
+			this.in = new SecureInputStream(secureKey, "AES", in);
+			status = Status.OK;
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			status = Status.SECRET_KEY_ERROR;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			status = Status.ALGORITHM_ERROR;
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			status = Status.PADDING_ERROR;
+		}
+	}
 	
-	public final RequestCode code;
-	public final byte[] sessionId;
-	protected Configurator config;
+	public RequestCode rc(){
+		return rc;
+	}
 	
-	public Request(RequestCode code, byte[] sessionId){
-		this.code = code;
-		this.sessionId = sessionId;
-		config = new Configurator();
+	public Status status(){
+		return status;
+	}
+
+	@Override
+	public int read() throws IOException {
+		// TODO Auto-generated method stub
+		if (in != null)
+			return in.read();
+		return -1;
 	}
 }

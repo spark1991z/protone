@@ -15,10 +15,10 @@ public class SecureOutputStream extends OutputStream {
  
 	private CipherOutputStream out;
 	
-	public SecureOutputStream(String name, String algorithm, OutputStream out) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
+	public SecureOutputStream(byte[] secretKey, String algorithm, OutputStream out) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.reset();
-		md.update(name.getBytes());
+		md.update(secretKey);
 		byte[] key = md.digest();
 		Cipher c = Cipher.getInstance(algorithm);
 		c.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, algorithm));

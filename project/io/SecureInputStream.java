@@ -17,10 +17,10 @@ public class SecureInputStream extends InputStream {
 	private CipherInputStream in;
 	private int position;
 
-	 public SecureInputStream(String name, String algorithm, InputStream in) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
+	 public SecureInputStream(byte[] secretKey, String algorithm, InputStream in) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
 		 MessageDigest md = MessageDigest.getInstance("MD5");
 		 md.reset();
-		 md.update(name.getBytes());
+		 md.update(secretKey);
 		 byte[] key=md.digest(),check=new byte[16];
 		 Cipher c = Cipher.getInstance(algorithm);
 		 c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, algorithm));

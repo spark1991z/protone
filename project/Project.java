@@ -36,7 +36,7 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return String.format("%s v%s.%s%s (build %s)", name, ver, revision, stage.display,
+		return String.format("%s version %s.%s%s (build %s)", name, ver, revision, stage.display,
 				 build);
 	}
 }

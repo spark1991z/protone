@@ -1,26 +1,23 @@
 package project.main;
 
-import static project.Configurator.OK;
-import static project.Stage.ALPHA;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 
-import javax.net.ServerSocketFactory;
-
+import project.Configurator;
 import project.Parameter;
 import project.Project;
 import project.Stage;
 import project.io.FilteredPrintStream;
-import project.io.proto.Protocol;
-import project.io.proto.Status;
+import project.io.proto.ConnectionListener;
+import project.io.proto.Request;
+import project.io.proto.Response;
+import project.io.proto.Server;
+
 /**
  * 
  * @author spark1991z
  * 
  */
-public class Main extends Project implements Runnable {
+public class Main extends Project implements ConnectionListener {
 
 	private static Main project;
 
@@ -31,14 +28,15 @@ public class Main extends Project implements Runnable {
 	public static void main(String[] args) {
 		if (project != null)
 			return;
-		project = new Main("ProtONE", 0.5, 5, ALPHA, 143.2); // 13.06
-		System.out.printf("%s%n-----------------------------%n", project);
+		project = new Main();
+		System.out.printf("%s%n%s%n-----------------------------%n", project,
+				project.server);
 		int push = project.config.pushArgs(args);
-		if (push != OK || project.config.get('h').changed()) {
+		if (push != Configurator.OK || project.config.get('h').changed()) {
 			usage();
 			return;
 		}
-		if(!project.config.get('d').changed()){
+		if (!project.config.get('d').changed()) {
 			System.setOut(new PrintStream(new FilteredPrintStream(null)));
 			System.setErr(new PrintStream(new FilteredPrintStream(null)));
 		}
@@ -54,6 +52,8 @@ public class Main extends Project implements Runnable {
 
 	}
 
+	private Server server;
+
 	private static void usage() {
 		StringBuffer out = new StringBuffer();
 		int len = project.config.maxLabelLength();
@@ -68,84 +68,32 @@ public class Main extends Project implements Runnable {
 		System.out.println(out);
 	}
 
-	private Thread runnable;
-	private ServerSocket server;
-
-	
-	private Main(String name, double ver, int revision, Stage stage,
-			double build) {
-		super(name, ver, revision, stage, build);
+	private Main() {
+		super("ProtONE", 0.6, 0, Stage.BETA, 147.2); // 17.06
 		config.add('d', "debug mode");
 		config.add('h', "show this information");
 		config.add("port", new Parameter<Integer>(9999, "connection port"));
+		server = new Server((Integer) (config.get("port").isSet() ? config.get(
+				"port").value() : config.get("port").def), this);
 	}
 
 	@Override
 	protected synchronized void start() {
 		super.start();
-		if (server == null) {
-			int port = (Integer) (config.get("port").isSet() ? config.get(
-					"port").value() : config.get("port").def);
-				System.out.printf("Starting server on %s port...%n", port);
-			try {
-				server = ServerSocketFactory.getDefault().createServerSocket(
-						port);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-		if (runnable == null) {
-				System.out.println("Server was successfully started");
-			runnable = new Thread(this);
-			runnable.start();
-		}
+		if (!server.isWork())
+			server.start();
 	}
 
 	@Override
 	protected synchronized void stop() {
 		super.stop();
-		if (runnable != null) {
-			System.out.printf("Stoping server on %s port...%n", server.getLocalPort());
-			try {
-				Socket s = new Socket("localhost", server.getLocalPort());
-				s.close();
-				runnable = null;
-				System.out.println("Server was stoped");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		if (server.isWork())
+			server.stop();
 	}
 
 	@Override
-	public synchronized void run() {
-		while (runnable != null) {
-			try {
-				final Socket s = server.accept();
-				
-				new Thread(new Runnable() {
-					@Override
-					public synchronized void run() {
-						System.out.printf("Connected '%s'%n", s);
-						try {
-							Protocol prot = new Protocol(name);
-							Status status = Protocol.open(prot, s);
-								System.out.printf("Connection status: %s%n",
-										status);
-							if (status != Status.OK) {
-								return;
-							}
-							
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
-				}).start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	public void onGetOrPost(Request req, Response res) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -2,11 +2,11 @@ package project.io.proto;
 
 public enum ResponseCode {
 	
-	PROTOCOL_ERROR(0x10),
-	RESPONSE_ERROR(0x11),
-	OK(0x20),
-	SESSION_ERROR(0x21),
-	SESSION_CHANGED(0x22);
+	SESSION_ID_ERROR(0x10),
+	PRIVATE_KEY_ERROR(0x11),
+	
+	SESSION_ID_CHANGED(0x20),
+	OK(0x21);
 
 	public static ResponseCode valueOf(int id) {
 		for (ResponseCode rc : values()) {
@@ -15,11 +15,9 @@ public enum ResponseCode {
 		}
 		return null;
 	}
-
 	public final int id;
-
+	
 	private ResponseCode(int id) {
 		this.id = id;
 	}
-
 }

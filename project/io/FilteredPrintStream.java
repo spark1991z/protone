@@ -4,17 +4,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+/**
+ * 
+ * @author spark1991z
+ * 
+ */
 public class FilteredPrintStream extends OutputStream {
-	
+
 	private PrintStream system;
-	
-	public FilteredPrintStream(PrintStream system){
+
+	public FilteredPrintStream(PrintStream system) {
 		this.system = system;
 	}
 
 	@Override
 	public void write(int b) throws IOException {
-		if(system!=null)
+		if (system != null)
 			system.write(b);
 	}
+
 }

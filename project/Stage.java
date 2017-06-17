@@ -1,12 +1,12 @@
 package project;
+
 /**
- *  
+ * 
  * @author spark1991z
- *
+ * 
  */
 public enum Stage {
-	INITIAL(0, "i"), ALPHA(1, "a"), BETA(2, "b"), RELEASE(3, "r"), FINAL(4,
-			"f");
+	INITIAL(0, "i"), ALPHA(1, "a"), BETA(2, "b"), RELEASE(3, "r"), FINAL(4, "f");
 
 	public final int id;
 	public final String display;
@@ -23,4 +23,5 @@ public enum Stage {
 		}
 		return null;
 	}
+
 }

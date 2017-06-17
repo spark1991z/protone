@@ -2,12 +2,13 @@ package project;
 
 import java.util.Hashtable;
 import java.util.Set;
+
 /**
  * 
  * @author spark1991z
- *
+ * 
  */
-public final class Configurator {
+public class Configurator {
 
 	public static final int OK = 0, UNKNOWN_ARGUMENT = 1, UNKNOWN_FLAG = 2,
 			ALREADY_CHANGED = 3, SYNTAX_ERROR = 4, UNKNOWN_PARAMETER = 5;
@@ -59,7 +60,7 @@ public final class Configurator {
 				if (!p.set(args[i + 1]))
 					return SYNTAX_ERROR;
 				params.put(s, p);
-				i+=1;
+				i += 1;
 				break;
 			default:
 				return UNKNOWN_ARGUMENT;
@@ -89,7 +90,7 @@ public final class Configurator {
 		for (String s : params()) {
 			len = s.length() > len ? s.length() : len;
 		}
-		return 2+len;
+		return 2 + len;
 	}
 
 }

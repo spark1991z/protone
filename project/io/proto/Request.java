@@ -26,36 +26,33 @@ public class Request extends InputStream {
 			this.in = new SecureInputStream(secureKey, "AES", in);
 			status = Status.OK;
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			status = Status.SECRET_KEY_ERROR;
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			status = Status.ALGORITHM_ERROR;
 		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			status = Status.PADDING_ERROR;
-		} catch (IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 			status = Status.IO_ERROR;
 		}
 	}
-	
-	public RequestCode rc(){
+
+	public RequestCode rc() {
 		return rc;
 	}
-	
-	public Status status(){
+
+	public Status status() {
 		return status;
 	}
 
 	@Override
 	public int read() throws IOException {
-		// TODO Auto-generated method stub
 		if (in != null)
 			return in.read();
 		return -1;
 	}
+
 }

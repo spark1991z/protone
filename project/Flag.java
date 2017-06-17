@@ -1,23 +1,26 @@
 package project;
+
 /**
  * 
  * @author spark1991z
- *
+ * 
  */
-public final class Flag {
-	
+public class Flag {
+
 	public final String display;
 	private boolean changed;
-	
-	public Flag(String display){
+
+	public Flag(String display) {
 		this.display = display;
 	}
-	
-	public void change(){
-		if(!changed) changed = true;
+
+	public void change() {
+		if (!changed)
+			changed = true;
 	}
-	
-	public boolean changed(){
+
+	public boolean changed() {
 		return changed;
 	}
+
 }

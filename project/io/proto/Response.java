@@ -19,10 +19,11 @@ public class Response extends OutputStream implements Closeable {
 
 	private OutputStream out, sos;
 	private ResponseCode rc;
-	private final byte[] sessionId,secureKey, newSecureKey;
+	private final byte[] sessionId, secureKey, newSecureKey;
 	private boolean closed;
 
-	public Response(byte[] sessionId, byte[] secureKey, byte[] newSecretKey, OutputStream out) {
+	public Response(byte[] sessionId, byte[] secureKey, byte[] newSecretKey,
+			OutputStream out) {
 		this.sessionId = sessionId;
 		this.secureKey = secureKey;
 		this.newSecureKey = newSecretKey;
@@ -32,23 +33,20 @@ public class Response extends OutputStream implements Closeable {
 	private void sendHeaders() throws IOException {
 		if (!closed && sos == null) {
 			out.write(rc != null ? rc.id : ResponseCode.OK.id);
-			if(sessionId!=null){
+			if (sessionId != null) {
 				out.write(sessionId);
 			}
-			if(secureKey!=null && newSecureKey !=null){
+			if (secureKey != null && newSecureKey != null) {
 				try {
 					sos = new SecureOutputStream(secureKey, "AES", out);
 					sos.write(newSecureKey);
 				} catch (InvalidKeyException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}	
+				}
 			}
 		}
 	}
@@ -68,7 +66,6 @@ public class Response extends OutputStream implements Closeable {
 
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
 		if (!closed) {
 			sendHeaders();
 			sos.flush();
@@ -81,10 +78,10 @@ public class Response extends OutputStream implements Closeable {
 
 	@Override
 	public void write(int arg0) throws IOException {
-		// TODO Auto-generated method stub
 		if (!closed) {
 			sendHeaders();
 			sos.write(arg0);
 		}
 	}
+
 }

@@ -56,7 +56,6 @@ public class Server extends Project implements Runnable {
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
 		super.start();
 		if (server == null) {
 			System.out.printf("Starting server on %s port...%n", port);
@@ -78,7 +77,6 @@ public class Server extends Project implements Runnable {
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 		super.stop();
 		if (runnable != null) {
 			System.out.printf("Stoping server on %s port...%n",
@@ -200,4 +198,5 @@ public class Server extends Project implements Runnable {
 			}
 		}
 	}
+
 }

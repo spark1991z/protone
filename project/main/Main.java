@@ -93,7 +93,7 @@ public class Main extends Project implements ConnectionListener {
 
 	@Override
 	public void onGetOrPost(Request req, Response res) {
-		// TODO Auto-generated method stub
 
 	}
+
 }

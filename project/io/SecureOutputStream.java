@@ -34,8 +34,9 @@ public class SecureOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(int b) throws IOException {
-		out.write(b);
+	public void close() throws IOException {
+		super.close();
+		out.close();
 	}
 
 	@Override
@@ -45,9 +46,8 @@ public class SecureOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void close() throws IOException {
-		super.close();
-		out.close();
+	public void write(int b) throws IOException {
+		out.write(b);
 	}
 
 }

@@ -26,70 +26,32 @@ import project.io.SecureOutputStream;
  */
 public class Server extends Project implements Runnable {
 
-	private byte[] genKey() throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.reset();
-		md.update((name + "_" + Long.toString(new Random().nextLong()))
-				.getBytes());
-		return md.digest();
-	}
-
 	private static String normalizeHash(byte[] token) {
 		String md5s = "";
 		for (byte b : token)
 			md5s += Integer.toHexString(b & 0xff);
 		return md5s;
 	}
-
+	
+	private ConnectionListener listener;
 	private final int port;
 	private Thread runnable;
 	private ServerSocket server;
 	private Hashtable<byte[], byte[]> sessionPrivateKeys;
-	private ConnectionListener listener;
 
 	public Server(int port, ConnectionListener listener) {
-		super("ProServer", 0.1, 1, Stage.ALPHA, 1.2); // 17.06
+		super("ProServer", 0.1, 1, Stage.ALPHA, 1.3); // 17.06
 		this.port = port;
 		this.listener = listener;
 		sessionPrivateKeys = new Hashtable<byte[], byte[]>();
 	}
-
-	@Override
-	public void start() {
-		super.start();
-		if (server == null) {
-			System.out.printf("Starting server on %s port...%n", port);
-			try {
-				server = ServerSocketFactory.getDefault().createServerSocket(
-						port);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-		if (runnable == null) {
-			System.out.println("Server was successfully started");
-			runnable = new Thread(this);
-			runnable.start();
-		}
-	}
-
-	@Override
-	public void stop() {
-		super.stop();
-		if (runnable != null) {
-			System.out.printf("Stoping server on %s port...%n",
-					server.getLocalPort());
-			try {
-				Socket s = new Socket("localhost", server.getLocalPort());
-				s.close();
-				runnable = null;
-				System.out.println("Server was stoped");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	
+	private byte[] genKey() throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.reset();
+		md.update((name + "_" + Long.toString(new Random().nextLong()))
+				.getBytes());
+		return md.digest();
 	}
 
 	public boolean isWork() {
@@ -193,6 +155,45 @@ public class Server extends Project implements Runnable {
 						}
 					}
 				}).start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+	@Override
+	public void start() {
+		super.start();
+		if (server == null) {
+			System.out.printf("Starting server on %s port...%n", port);
+			try {
+				server = ServerSocketFactory.getDefault().createServerSocket(
+						port);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		if (runnable == null) {
+			System.out.println("Server was successfully started");
+			runnable = new Thread(this);
+			runnable.start();
+		}
+	}
+
+	@Override
+	public void stop() {
+		super.stop();
+		if (runnable != null) {
+			System.out.printf("Stoping server on %s port...%n",
+					server.getLocalPort());
+			try {
+				Socket s = new Socket("localhost", server.getLocalPort());
+				s.close();
+				runnable = null;
+				System.out.println("Server was stoped");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

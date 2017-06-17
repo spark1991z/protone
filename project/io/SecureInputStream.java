@@ -39,6 +39,16 @@ public class SecureInputStream extends InputStream {
 	}
 
 	@Override
+	public void close() throws IOException {
+		super.close();
+		in.close();
+	}
+
+	public int position() {
+		return position;
+	}
+
+	@Override
 	public int read() throws IOException {
 		int read = in.read();
 		if (read >= 0)
@@ -52,16 +62,6 @@ public class SecureInputStream extends InputStream {
 			skip(-position);
 			position = 0;
 		}
-	}
-
-	public int position() {
-		return position;
-	}
-
-	@Override
-	public void close() throws IOException {
-		super.close();
-		in.close();
 	}
 
 }

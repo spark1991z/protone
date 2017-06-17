@@ -21,14 +21,38 @@ public class Configurator {
 		flags = new Hashtable<Character, Flag>();
 	}
 
+	public void add(char c, String display) {
+		if (!flags.containsKey(c))
+			flags.put(c, new Flag(display));
+	}
+
 	public void add(String key, Parameter<?> p) {
 		if (key != null && p != null && !params.containsKey(key))
 			params.put(key, p);
 	}
 
-	public void add(char c, String display) {
-		if (!flags.containsKey(c))
-			flags.put(c, new Flag(display));
+	public Set<Character> flags() {
+		return flags.keySet();
+	}
+
+	public Flag get(char c) {
+		return flags.containsKey(c) ? flags.get(c) : null;
+	}
+
+	public Parameter<?> get(String key) {
+		return key != null && params.containsKey(key) ? params.get(key) : null;
+	}
+
+	public int maxLabelLength() {
+		int len = 0;
+		for (String s : params()) {
+			len = s.length() > len ? s.length() : len;
+		}
+		return 2 + len;
+	}
+
+	public Set<String> params() {
+		return params.keySet();
 	}
 
 	public int pushArgs(String[] args) {
@@ -67,30 +91,6 @@ public class Configurator {
 			}
 		}
 		return OK;
-	}
-
-	public Parameter<?> get(String key) {
-		return key != null && params.containsKey(key) ? params.get(key) : null;
-	}
-
-	public Flag get(char c) {
-		return flags.containsKey(c) ? flags.get(c) : null;
-	}
-
-	public Set<String> params() {
-		return params.keySet();
-	}
-
-	public Set<Character> flags() {
-		return flags.keySet();
-	}
-
-	public int maxLabelLength() {
-		int len = 0;
-		for (String s : params()) {
-			len = s.length() > len ? s.length() : len;
-		}
-		return 2 + len;
 	}
 
 }

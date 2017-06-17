@@ -7,12 +7,12 @@ package project;
  */
 public class Project {
 
+	protected Configurator config;
 	public final String name;
-	public final double ver, build;
 	public final int revision;
 	public final Stage stage;
 
-	protected Configurator config;
+	public final double ver, build;
 
 	protected Project(String name, double ver, int revision, Stage stage,
 			double build) {
@@ -25,14 +25,14 @@ public class Project {
 		config = new Configurator();
 	}
 
+	public Configurator config() {
+		return config;
+	};
+
 	protected void start() {
 	};
 
 	protected void stop() {
-	};
-
-	public Configurator config() {
-		return config;
 	}
 
 	@Override

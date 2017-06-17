@@ -17,10 +17,10 @@ import project.io.SecureOutputStream;
  */
 public class Response extends OutputStream implements Closeable {
 
+	private boolean closed;
 	private OutputStream out, sos;
 	private ResponseCode rc;
 	private final byte[] sessionId, secureKey, newSecureKey;
-	private boolean closed;
 
 	public Response(byte[] sessionId, byte[] secureKey, byte[] newSecretKey,
 			OutputStream out) {
@@ -28,6 +28,31 @@ public class Response extends OutputStream implements Closeable {
 		this.secureKey = secureKey;
 		this.newSecureKey = newSecretKey;
 		this.out = out;
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (!closed) {
+			sendHeaders();
+			sos.flush();
+			sos.close();
+			out.flush();
+			out.close();
+			closed = true;
+		}
+	}
+
+	public boolean isClosed() {
+		return closed;
+	}
+
+	public ResponseCode responseCode() {
+		return rc;
+	}
+
+	public void responseCode(ResponseCode rc) {
+		if (rc != null)
+			this.rc = rc;
 	}
 
 	private void sendHeaders() throws IOException {
@@ -48,31 +73,6 @@ public class Response extends OutputStream implements Closeable {
 					e.printStackTrace();
 				}
 			}
-		}
-	}
-
-	public boolean isClosed() {
-		return closed;
-	}
-
-	public ResponseCode responseCode() {
-		return rc;
-	}
-
-	public void responseCode(ResponseCode rc) {
-		if (rc != null)
-			this.rc = rc;
-	}
-
-	@Override
-	public void close() throws IOException {
-		if (!closed) {
-			sendHeaders();
-			sos.flush();
-			sos.close();
-			out.flush();
-			out.close();
-			closed = true;
 		}
 	}
 

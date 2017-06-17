@@ -6,8 +6,8 @@ package project.io.proto;
  * 
  */
 public enum ResponseCode {
-	REQUEST_CODE_ERROR(0x10), SESSION_ID_ERROR(0x11), PRIVATE_KEY_ERROR(0x12), SESSION_ID_CHANGED(
-			0x20), OK(0x21);
+	OK(0x21), PRIVATE_KEY_ERROR(0x12), REQUEST_CODE_ERROR(0x10), SESSION_ID_CHANGED(
+			0x20), SESSION_ID_ERROR(0x11);
 
 	public static ResponseCode valueOf(int id) {
 		for (ResponseCode rc : values()) {

@@ -17,8 +17,8 @@ import project.io.SecureInputStream;
 public class Request extends InputStream {
 
 	private InputStream in;
-	private Status status;
 	private final RequestCode rc;
+	private Status status;
 
 	public Request(RequestCode rc, byte[] secureKey, InputStream in) {
 		this.rc = rc;
@@ -44,15 +44,15 @@ public class Request extends InputStream {
 		return rc;
 	}
 
-	public Status status() {
-		return status;
-	}
-
 	@Override
 	public int read() throws IOException {
 		if (in != null)
 			return in.read();
 		return -1;
+	}
+
+	public Status status() {
+		return status;
 	}
 
 }

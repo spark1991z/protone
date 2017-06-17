@@ -21,8 +21,13 @@ public class Main extends Project implements ConnectionListener {
 
 	private static Main project;
 
-	public static final Project project() {
-		return project;
+	private static String genStr(int len, String append) {
+		String s = "";
+		for (int i = 0; i < len - append.length(); i++)
+			s += " ";
+		s += append;
+		return s;
+
 	}
 
 	public static void main(String[] args) {
@@ -43,16 +48,9 @@ public class Main extends Project implements ConnectionListener {
 		project.start();
 	}
 
-	private static String genStr(int len, String append) {
-		String s = "";
-		for (int i = 0; i < len - append.length(); i++)
-			s += " ";
-		s += append;
-		return s;
-
+	public static final Project project() {
+		return project;
 	}
-
-	private Server server;
 
 	private static void usage() {
 		StringBuffer out = new StringBuffer();
@@ -68,13 +66,20 @@ public class Main extends Project implements ConnectionListener {
 		System.out.println(out);
 	}
 
+	private Server server;
+
 	private Main() {
-		super("ProtONE", 0.6, 0, Stage.BETA, 147.2); // 17.06
+		super("ProtONE", 0.6, 1, Stage.BETA, 147.3); // 17.06
 		config.add('d', "debug mode");
 		config.add('h', "show this information");
 		config.add("port", new Parameter<Integer>(9999, "connection port"));
 		server = new Server((Integer) (config.get("port").isSet() ? config.get(
 				"port").value() : config.get("port").def), this);
+	}
+
+	@Override
+	public void onGetOrPost(Request req, Response res) {
+
 	}
 
 	@Override
@@ -89,11 +94,6 @@ public class Main extends Project implements ConnectionListener {
 		super.stop();
 		if (server.isWork())
 			server.stop();
-	}
-
-	@Override
-	public void onGetOrPost(Request req, Response res) {
-
 	}
 
 }

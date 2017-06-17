@@ -7,8 +7,8 @@ package project;
  */
 public class Flag {
 
-	public final String display;
 	private boolean changed;
+	public final String display;
 
 	public Flag(String display) {
 		this.display = display;

@@ -8,13 +8,21 @@ package project;
  */
 public class Parameter<T> {
 
-	public final String display;
 	public final T def;
+	public final String display;
 	private Object val;
 
 	public Parameter(T def, String display) {
 		this.def = def;
 		this.display = display;
+	}
+
+	public T defaultValue() {
+		return def;
+	}
+
+	public boolean isSet() {
+		return val != null;
 	}
 
 	public boolean set(String s) {
@@ -34,16 +42,8 @@ public class Parameter<T> {
 		return val != null;
 	}
 
-	public T defaultValue() {
-		return def;
-	}
-
 	public Object value() {
 		return val;
-	}
-
-	public boolean isSet() {
-		return val != null;
 	}
 
 }

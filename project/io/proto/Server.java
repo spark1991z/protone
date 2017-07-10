@@ -119,6 +119,7 @@ public class Server extends Project implements Runnable {
 										res.close();
 										break;
 									}
+									sessionPrivateKeys.put(sid, nsk);
 									System.out
 											.printf("Private security channel validation was successful and NEW secureKEY changed: %s%n",
 													normalizeHash(nsk));
